@@ -1,0 +1,143 @@
+ .btn {
+     margin: 10px !important;
+     position: relative;
+ }
+ .primary {
+     width: 160px !important;
+     height: 170px;
+ }
+ .pickissue {
+     font-family: 'Source Sans Pro' !important;
+     margin: 0 0 10px 10px;
+     font-size: 17px;
+ }
+ svg {
+     width: 130px !important;
+     height: 130px !important;
+     padding-bottom: 10px;
+ }
+ body {
+     margin-top: 30px;
+ }
+ .form-group {
+     margin: 10px;
+ }
+ .name {
+     bottom: 0px;
+ }
+ #credit {
+     text-align: center;
+ }
+ /* scale and fade */
+ 
+ .pt-page-scaleDown {
+     -webkit-animation: scaleDown .7s ease both;
+     animation: scaleDown .7s ease both;
+ }
+ .pt-page-scaleUp {
+     -webkit-animation: scaleUp .7s ease both;
+     animation: scaleUp .7s ease both;
+ }
+ .pt-page-scaleUpDown {
+     -webkit-animation: scaleUpDown 1s ease both;
+     animation: scaleUpDown 1s ease both;
+ }
+ .pt-page-scaleDownUp {
+     -webkit-animation: scaleDownUp 1s ease both;
+     animation: scaleDownUp 1s ease both;
+ }
+ .pt-page-scaleDownCenter {
+     -webkit-animation: scaleDownCenter .4s ease-in both;
+     animation: scaleDownCenter .4s ease-in both;
+ }
+ .pt-page-scaleUpCenter {
+     -webkit-animation: scaleUpCenter .4s ease-out both;
+     animation: scaleUpCenter .4s ease-out both;
+ }
+ /********************************* keyframes **************************************/
+ /* scale and fade */
+ 
+ @-webkit-keyframes scaleDown {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(.8);
+     }
+ }
+ @keyframes scaleDown {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(.8);
+         transform: scale(.8);
+     }
+ }
+ @-webkit-keyframes scaleUp {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(.8);
+     }
+ }
+ @keyframes scaleUp {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(.8);
+         transform: scale(.8);
+     }
+ }
+ @-webkit-keyframes scaleUpDown {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(1.2);
+     }
+ }
+ @keyframes scaleUpDown {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(1.2);
+         transform: scale(1.2);
+     }
+ }
+ @-webkit-keyframes scaleDownUp {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(1.2);
+     }
+ }
+ @keyframes scaleDownUp {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(1.2);
+         transform: scale(1.2);
+     }
+ }
+ @-webkit-keyframes scaleDownCenter {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(.7);
+     }
+ }
+ @keyframes scaleDownCenter {
+     from {}
+     to {
+         opacity: 0;
+         -webkit-transform: scale(.7);
+         transform: scale(.7);
+     }
+ }
+ @-webkit-keyframes scaleUpCenter {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(.7);
+     }
+ }
+ @keyframes scaleUpCenter {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(.7);
+         transform: scale(.7);
+     }
+ }
