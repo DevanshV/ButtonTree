@@ -2,6 +2,9 @@
      margin: 10px !important;
      position: relative;
  }
+ h5 {
+     padding-left: 10px;
+ }
  .primary {
      width: 160px !important;
      height: 170px;

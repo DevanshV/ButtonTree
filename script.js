@@ -1,15 +1,24 @@
 $(document).ready(function () {
+
     $(".form").hide();
     $(".back").hide();
+
+    //identifies the stage, 0 for the first, 3 for the last
     var stage = 0;
+
+
+    //used to identify the button clicks, -1 means it has not been clicked
     var primaryid = -1;
     var secondaryid = -1;
     var tertiaryid = -1;
     var finalid = -1;
+
     var issuetext;
+
+    //holds the class given to each button, class is name with no spaces
     var indexnospace;
 
-    //initializes
+    //initializes  (creates the first set of buttons)
     initialize();
 
     function initialize() {
@@ -22,10 +31,14 @@ $(document).ready(function () {
             $(".primary").addClass("pt-page-scaleUp");
         }
 
+        //resets any button presses
         primaryid = -1;
         secondaryid = -1;
         tertiaryid = -1;
         finalid = -1;
+
+        //displays current button click path (currently no buttons pressed)
+        showpath();
 
         //waits for primary button click
         primaryclick();
@@ -40,14 +53,19 @@ $(document).ready(function () {
             if (issues[primaryid].detail1) {
 
                 $(".primary").addClass("pt-page-scaleDownCenter");
+
                 setTimeout(function () {
                     $("span").empty();
                     addSecondaryButtons(primaryid);
                 }, 500);
 
+                showpath();
 
             } else {
+
                 $(".form").fadeIn();
+                showpath();
+
             }
 
         });
@@ -60,16 +78,20 @@ $(document).ready(function () {
 
             //creates third stage buttons
             if (issues[primaryid].detail1[secondaryid].detail2) {
-                
+
                 $(".secondary").addClass("pt-page-scaleDownCenter");
+
                 setTimeout(function () {
                     $("span").empty();
                     addTertiaryButtons(primaryid, secondaryid);
                 }, 500);
+                showpath();
 
 
             } else {
                 $(".form").fadeIn();
+                showpath();
+
             }
         });
     }
@@ -90,11 +112,15 @@ $(document).ready(function () {
                     addfinalbuttons(primaryid, secondaryid, tertiaryid);
 
                 }, 700);
+                showpath();
 
             } else {
                 $(".form").fadeIn();
+                showpath();
+
             }
         });
+        showpath();
 
     }
 
@@ -102,6 +128,7 @@ $(document).ready(function () {
         $(".final").click(function () {
             finalid = this.id;
             $(".form").fadeIn();
+            showpath();
         });
 
     }
@@ -119,7 +146,7 @@ $(document).ready(function () {
         secondaryid = -1;
         tertiaryid = -1;
         finalid = -1;
-
+        showpath();
         //display back button
         $(".back").show();
         $(".back").addClass("pt-page-scaleUp");
@@ -140,6 +167,7 @@ $(document).ready(function () {
         //ensures ids are correct
         tertiaryid = -1;
         finalid = -1;
+        showpath();
 
         //waits for tertiary button click to show input
         Tertiaryclick();
@@ -155,7 +183,7 @@ $(document).ready(function () {
         }
         //ensures ids are correct
         finalid = -1;
-
+        showpath();
         //waits for final button click to show input
         finalclick();
     }
@@ -173,7 +201,9 @@ $(document).ready(function () {
             }, 300);
 
             $(".back").hide();
+            $("h5").empty();
             $(".form").hide();
+            showpath();
         } else if (stage == 3) {
             $(".tertiary").addClass("pt-page-scaleDownUp");
             setTimeout(function () {
@@ -182,6 +212,7 @@ $(document).ready(function () {
             setTimeout(function () {
                 addSecondaryButtons(primaryid);
             }, 300);
+            showpath();
 
             $(".form").hide();
         } else {
@@ -192,12 +223,17 @@ $(document).ready(function () {
             setTimeout(function () {
                 addTertiaryButtons(primaryid, secondaryid);
             }, 300);
+            showpath();
 
             $(".form").hide();
         }
     });
 
     $(".submit").click(function () {
+        //not sure yet
+    });
+
+    function showpath() {
 
         var one = "";
         var two = "";
@@ -216,7 +252,8 @@ $(document).ready(function () {
         if (finalid != -1)
             four = " - " + issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3[finalid];
 
-        alert(one + two + three + four);
+        $("h5").empty();
+        $("h5").append(one + two + three + four)
 
-    });
+    }
 });
