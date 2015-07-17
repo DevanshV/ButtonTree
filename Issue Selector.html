@@ -7,6 +7,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 
     <link href='style.css' rel='stylesheet' type='text/css'>
     <script src="data.js"></script>
@@ -16,20 +19,43 @@
 </head>
 
 <body class="container">
-    <p class="pickissue"> Please pick an issue from the list below: </p>
-    <h5></h5>
-    <span></span>
+    <div>
+        <span class="backbutton">
+            <button type='button' class='back btn btn-default'></button>
+        </span>
+        <span>
+        <p class="pickissue"> Select an issue from the list below:</p>
+        </span>
+    </div>
+    <!--<p class="path"> </p>-->
+    <span class="buttonbox"></span>
 
-    <div class="form">
-        <div class='form-group'>
-            <label for='inputlg'>Additional details:</label>
-            <input class='form-control input-lg' id='inputlg' name="issue" type='text'>
-        </div>
+    <div class="form container">
+
+        <label class="title" for='adddetail'>Anything we missed? Let us know!</label>
+        <textarea class="form-control adddetail" id='userinput' name="issue" type='text' rows="3" placeholder='Please input additional details here'></textarea>
+
+
     </div>
     <div>
-        <button type='button' class='back btn btn-primary back'>Back</button>
-        <button type='button' class='submit form btn btn-success submit pull-right'>Submit</button>
+        <!--        <button type='button' class='back btn btn-default back'><i class="fa fa-arrow-left fa-2x"></i></button>-->
+        <button type='button' class='submit form btn btn-default submit pull-right'>Submit</button>
     </div>
+
+    <div class="input">
+        <p> Primary selection - General area of issue</p>
+        <input type="text" class="form-control primaryinput">
+        <p> Secondary selection</p>
+        <input type="text" class="form-control secondaryinput">
+        <p> Tertiary selection</p>
+        <input type="text" class="form-control tertiaryinput">
+        <p> Final selection</p>
+        <input type="text" class="form-control finalinput">
+        <p> User input</p>
+        <input type="text" class="form-control userinput">
+    </div>
+
+
 </body>
 
 </html>
