@@ -1,3 +1,24 @@
+.primary {
+    min-height: 25vh;
+    border-color: silver;
+    box-shadow: 7px 7px 5px gainsboro;
+}
+.primary:hover {
+    box-shadow: rgba(0, 0, 0, 0.121569) 2px 4px 6px 2px inset;
+}
+.secondary,
+.tertiary,
+.final {
+    min-height: 20vh;
+    border-radius: 4px !important;
+    background-color: rgb(252, 252, 252) !important;
+}
+.secondary:hover,
+.tertiary:hover,
+.final:hover {
+    box-shadow: 1px 1px 3px #888888;
+    background-color: white !important;
+}
 .back {
     border-radius: 200%;
     width: 50px;
@@ -8,142 +29,53 @@
     opacity: 1 !important;
     cursor: auto !important;
 }
-.fa-arrow-left {
-    color: rgb(28, 33, 39);
-}
-.fa-arrow-left:hover {
-    color: black;
-}
-.secondary,
-.tertiary,
-.final {
-    /*    box-shadow: rgba(0, 0, 0, 0.121569) 2px 4px 6px 2px inset;
-    */
-    min-height: 20vh;
-    border-radius: 4px !important;
-    background-color: rgb(252, 252, 252) !important;
-}
-.buttontext {
-    font-size: 18px;
+.text {
+    font-size: 17px;
     font-family: 'Open Sans';
     white-space: pre-wrap;
 }
-.buttonbox {
-    margin-left: 0px;
-}
-.title {
-    padding-top: 40px;
-}
-.secondary:hover,
-.tertiary:hover,
-.final:hover {
-    box-shadow: 1px 1px 3px #888888;
-    background-color: white !important;
-}
-.primary:hover {
-    box-shadow: rgba(0, 0, 0, 0.121569) 2px 4px 6px 2px inset;
-    /*
-    border-color: black;
-    
-    
-    -webkit-box-shadow: rgba(0, 0, 0, 0.121569) 0px 3px 5px 0px inset;
-*/
-}
-.form-control {
-    margin-left: 10px;
-}
-.input > p {
-    font-weight: bold;
-    padding-top: 15px;
-}
-.input {
+.backgroundinput > p {
     display: block;
     clear: both;
+    font-weight: bold;
+    padding-top: 15px;
+    margin: 10px;
 }
 .btn {
     margin: 10px !important;
-    position: relative;
-}
-.path,
-.title {
-    padding-left: 10px;
-    font-family: 'Open Sans';
-    font-size: 14px;
-    display: block !important;
-    clear: both;
-}
-.primary {
-    /*
-    width: 160px !important;
-  height: 170px;
-*/
-    min-height: 25vh;
-    border-color: silver;
-    box-shadow: 7px 7px 5px gainsboro;
-    /*    background: -webkit-linear-gradient(gainsboro, white);*/
 }
 .pickissue {
     font-family: 'Open Sans' !important;
-    display: inline-block margin: 0 0 10px 10px;
+    display: inline-block;
     font-size: 17px;
     font-weight: bold;
-    display: inline;
 }
-svg {
+button > svg {
     width: 130px !important;
     height: 130px;
     padding-bottom: 10px;
 }
-.title {
+.detailinputtitle {
+    font-family: 'Open Sans';
     font-size: 17px;
-}
-body {
-    margin-top: 30px;
-}
-.form-group {
-    margin: 10px;
-}
-.name {
-    bottom: 0px;
-}
-#credit {
-    text-align: center;
+    clear: both;
+    display: block;
+    padding-top: 40px;
 }
 
 /* scale and fade */
-
-.pt-page-scaleDown {
-    -webkit-animation: scaleDown .7s ease both;
-    animation: scaleDown .7s ease both;
-}
-
-/*used in code*/
 
 .pt-page-scaleUp {
     -webkit-animation: scaleUp .5s ease both;
     animation: scaleUp .5s ease both;
 }
-
-/*used in code*/
-
 .pt-page-scaleUpDown {
     -webkit-animation: scaleUpDown 0.3s ease both;
     animation: scaleUpDown 0.3s ease both;
 }
-.pt-page-scaleDownUp {
-    -webkit-animation: scaleDownUp 0.3s ease both;
-    animation: scaleDownUp 0.3s ease both;
-}
-
-/*used in code*/
-
 .pt-page-scaleDownCenter {
     -webkit-animation: scaleDownCenter .3s ease-in both;
     animation: scaleDownCenter .3s ease-in both;
-}
-.pt-page-scaleUpCenter {
-    -webkit-animation: scaleUpCenter .4s ease-out both;
-    animation: scaleUpCenter .4s ease-out both;
 }
 
 /********************************* keyframes **************************************/
@@ -151,21 +83,6 @@ body {
 
 /* scale and fade */
 
-@-webkit-keyframes scaleDown {
-    from {}
-    to {
-        opacity: 0;
-        -webkit-transform: scale(.8);
-    }
-}
-@keyframes scaleDown {
-    from {}
-    to {
-        opacity: 0;
-        -webkit-transform: scale(.8);
-        transform: scale(.8);
-    }
-}
 @-webkit-keyframes scaleUp {
     from {
         opacity: 0;
@@ -192,21 +109,6 @@ body {
         transform: scale(1.2);
     }
 }
-@-webkit-keyframes scaleDownUp {
-    from {}
-    to {
-        opacity: 0;
-        -webkit-transform: scale(1.2);
-    }
-}
-@keyframes scaleDownUp {
-    from {}
-    to {
-        opacity: 0;
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-    }
-}
 @-webkit-keyframes scaleDownCenter {
     from {}
     to {
@@ -217,19 +119,6 @@ body {
 @keyframes scaleDownCenter {
     from {}
     to {
-        opacity: 0;
-        -webkit-transform: scale(.7);
-        transform: scale(.7);
-    }
-}
-@-webkit-keyframes scaleUpCenter {
-    from {
-        opacity: 0;
-        -webkit-transform: scale(.7);
-    }
-}
-@keyframes scaleUpCenter {
-    from {
         opacity: 0;
         -webkit-transform: scale(.7);
         transform: scale(.7);

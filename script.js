@@ -162,7 +162,7 @@ $(document).ready(function () {
         for (j = 0; j < issues[primaryid].detail1.length; j++) {
             var index = issues[primaryid].detail1[j].name;
             var indexnospace = index.replace(/\s+/g, '');
-            var secondarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 secondary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + j.toString() + "'><p class='buttontext'>" + index + "</p></button>";
+            var secondarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 secondary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + j.toString() + "'><p class='text'>" + index + "</p></button>";
             $(".buttonbox").append(secondarybutton);
             stage = 2;
         }
@@ -185,7 +185,7 @@ $(document).ready(function () {
         for (k = 0; k < issues[primaryid].detail1[secondaryid].detail2.length; k++) {
             var index = issues[primaryid].detail1[secondaryid].detail2[k].name;
             var indexnospace = index.replace(/\s+/g, '');
-            var tertiarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 tertiary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + k.toString() + "'><p class='buttontext'>" + index + "</p></button>";
+            var tertiarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 tertiary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + k.toString() + "'><p class='text'>" + index + "</p></button>";
             $(".buttonbox").append(tertiarybutton);
             stage = 3;
         }
@@ -203,7 +203,7 @@ $(document).ready(function () {
         for (m = 0; m < issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3.length; m++) {
             var index = issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3[m];
             var indexnospace = index.replace(/\s+/g, '');
-            var finalbutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 final pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + m.toString() + "'><p class='buttontext'>" + index + "</p></button>";
+            var finalbutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 final pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + m.toString() + "'><p class='text'>" + index + "</p></button>";
             $(".buttonbox").append(finalbutton);
             stage = 4;
         }
