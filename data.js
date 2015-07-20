@@ -8,6 +8,7 @@
         // img are only included for the inital/outer categories
 
 
+
         var issues = [
             {
                 "name": "Hot Water",

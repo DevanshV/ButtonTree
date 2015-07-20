@@ -1,23 +1,42 @@
+.fa {
+    color: #3498db;
+}
+.fa-arrow-left:hover {
+    color: RGB(132, 196, 62)!important;
+}
 .primary {
     min-height: 25vh;
-    border-color: silver;
-    box-shadow: 7px 7px 5px gainsboro;
+    border-color: white;
+    border-radius: 0px;
+    background-color: transparent;
 }
+.primary:active,
+.primary:focus,
 .primary:hover {
-    box-shadow: rgba(0, 0, 0, 0.121569) 2px 4px 6px 2px inset;
+    background-color: transparent !important;
+    border: none;
+}
+.primary:active {
+    box-shadow: rgba(0, 0, 0, 0.121569) 2px 2px 6px 2px inset;
+    border: 1px solid silver !important;
 }
 .secondary,
 .tertiary,
 .final {
+    margin: 10px !important;
     min-height: 20vh;
-    border-radius: 4px !important;
-    background-color: rgb(252, 252, 252) !important;
+    border-radius: 10px !important;
+    border-color: #3498db;
+    background-color: #3498db;
+    color: white;
 }
 .secondary:hover,
 .tertiary:hover,
 .final:hover {
-    box-shadow: 1px 1px 3px #888888;
-    background-color: white !important;
+    background-color: white;
+    color: #3498db;
+    border-color: #3498db;
+    -webkit-transition: all 0.20s linear;
 }
 .back {
     border-radius: 200%;
@@ -30,7 +49,7 @@
     cursor: auto !important;
 }
 .text {
-    font-size: 17px;
+    font-size: 20px;
     font-family: 'Open Sans';
     white-space: pre-wrap;
 }
@@ -41,19 +60,33 @@
     padding-top: 15px;
     margin: 10px;
 }
-.btn {
-    margin: 10px !important;
-}
 .pickissue {
     font-family: 'Open Sans' !important;
     display: inline-block;
     font-size: 17px;
     font-weight: bold;
+    padding-bottom: 20px;
+    color: RGB(11, 18, 35);
+    padding-top: 20px;
 }
 button > svg {
-    width: 130px !important;
-    height: 130px;
+    width: 110px !important;
+    height: 110px;
+    fill: #3498db;
+    stroke-color: #3498db;
     padding-bottom: 10px;
+}
+path,
+circle,
+polygon {
+    fill: #3498db !important;
+}
+.primary:hover path,
+.primary:hover circle,
+.primary:hover polygon,
+.primary:hover svg {
+    fill: RGB(132, 196, 62)!important;
+    -webkit-transition: all 0.20s linear;
 }
 .detailinputtitle {
     font-family: 'Open Sans';

@@ -1,21 +1,16 @@
 $(document).ready(function () {
-
     $(".form").hide();
-    // $(".back").css("opacity", "0");
     $(".back").addClass("disabled");
     $(".back").html("<i class='fa fa-wrench fa-2x'></i>")
 
     //identifies the stage, 0 for the first, 3 for the last
     var stage = 0;
 
-
     //used to identify the button clicks, -1 means it has not been clicked
-    var primaryid = -1;
-    var secondaryid = -1;
-    var tertiaryid = -1;
-    var finalid = -1;
+    var id = [-1, -1, -1, -1];
 
-    var issuetext;
+    //class names corresponding to button class on each stage
+    var classes = ["primary", "secondary", "tertiary", "final"];
 
     //holds the class given to each button, class is name with no spaces
     var indexnospace;
@@ -23,132 +18,65 @@ $(document).ready(function () {
     //initializes  (creates the first set of buttons)
     initialize();
 
-    function initialize() {
-        //creates primary menu buttons
-        for (i = 0; i < issues.length; i++) {
-            var index = issues[i].name;
-            var indexnospace = index.replace(/\s+/g, ''); //removes spaces to make class
-            var primarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 primary btn btn-default " + indexnospace + "' id='" + i.toString() + "'>" + issues[i].img + "<p class='name'>" + index + "</p></button>";
-            $(".buttonbox").append(primarybutton);
-            $(".primary").addClass("pt-page-scaleUp");
+    function checkChildExist(classname) {
+        if (classname == "primary") {
+            if (issues[id[0]].detail1) {
+                return true;
+            }
+        } else if (classname == "secondary") {
+            if (issues[id[0]].detail1[id[1]].detail2) {
+                return true;
+            }
+        } else if (classname == "tertiary") {
+            if (issues[id[0]].detail1[id[1]].detail2[id[2]].detail3) {
+                return true;
+            }
+        } else if (classname == "final") {
+            return false;
         }
-        stage = 1;
-
-        //resets any button presses
-        primaryid = -1;
-        secondaryid = -1;
-        tertiaryid = -1;
-        finalid = -1;
-
-        //displays current button click path (currently no buttons pressed)
-        showpath();
-
-        //waits for primary button click
-        primaryclick();
+        return false;
     }
 
-    function primaryclick() {
-        $(".primary").click(function () {
+    function buttonclick() {
+        $(".issue").click(function () {
             $(".form").hide();
-            primaryid = this.id;
+            var classIndex;
+            if ($(this).hasClass(classes[0])) {
+                id[0] = this.id;
+                classIndex = 0;
+            } else if ($(this).hasClass(classes[1])) {
+                id[1] = this.id;
+                classIndex = 1;
+            } else if ($(this).hasClass(classes[2])) {
+                id[2] = this.id;
+                classIndex = 2;
+            } else if ($(this).hasClass(classes[3])) {
+                id[3] = this.id;
+                classIndex = 3;
+            }
 
+            $("." + classes[classIndex] + "input").val($(this).text().trim());
 
-
-            $(".primaryinput").val($(this).text().trim());
-
-
-            //creates secondary menu buttons
-            if (issues[primaryid].detail1) {
-
-                $(".primary").addClass("pt-page-scaleDownCenter");
+            if (checkChildExist(classes[classIndex]) == true) {
+                $("." + classes[classIndex]).addClass("pt-page-scaleDownCenter");
 
                 setTimeout(function () {
                     $(".buttonbox").empty();
-                    addSecondaryButtons(primaryid);
+                    addButtons(id, classIndex + 1);
                 }, 500);
 
                 showpath();
-                $(".pickissue").empty();
-                $(".pickissue").append("Got it, there is an issue with the " + issues[primaryid].name.italics() + " at your residence. What else can you tell us?")
 
-            } else {
-
-                $(".form").fadeIn();
-                showpath();
-
-            }
-
-        });
-    }
-
-    function secondaryclick() {
-        $(".secondary").click(function () {
-            $(".form").hide();
-            secondaryid = this.id;
-
-            $(".secondaryinput").val($(this).text());
-
-            //creates third stage buttons
-            if (issues[primaryid].detail1[secondaryid].detail2) {
-
-                $(".secondary").addClass("pt-page-scaleDownCenter");
-
-                setTimeout(function () {
-                    $(".buttonbox").empty();
-                    addTertiaryButtons(primaryid, secondaryid);
-                }, 500);
-                showpath();
-
-
+                if (classes[classIndex] == "primary") {
+                    $(".pickissue").empty();
+                    $(".pickissue").append("Got it, there is an issue with the " + issues[id[0]].name.italics() + " at your residence. What else can you tell us?")
+                }
             } else {
                 $(".form").fadeIn();
                 showpath();
-
             }
+
         });
-    }
-
-    function Tertiaryclick() {
-        $(".tertiary").click(function () {
-            $(".form").hide();
-            tertiaryid = this.id;
-
-            $(".tertiaryinput").val($(this).text());
-
-
-            //creates fourth/final stage buttons
-            if (issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3) {
-
-                $(".tertiary").addClass("pt-page-scaleDownCenter");
-
-                setTimeout(function () {
-
-                    $(".buttonbox").empty();
-                    addfinalbuttons(primaryid, secondaryid, tertiaryid);
-
-                }, 700);
-                showpath();
-
-            } else {
-                $(".form").fadeIn();
-                showpath();
-
-            }
-        });
-        showpath();
-
-    }
-
-    function finalclick() {
-        $(".final").click(function () {
-
-            $(".finalinput").val($(this).text());
-
-            finalid = this.id;
-            $(".form").fadeIn();
-            showpath();
-        });
-
     }
 
     $(".adddetail")
@@ -158,65 +86,76 @@ $(document).ready(function () {
         })
         .keyup();
 
-    function addSecondaryButtons(primaryid) {
-        for (j = 0; j < issues[primaryid].detail1.length; j++) {
-            var index = issues[primaryid].detail1[j].name;
-            var indexnospace = index.replace(/\s+/g, '');
-            var secondarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 secondary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + j.toString() + "'><p class='text'>" + index + "</p></button>";
-            $(".buttonbox").append(secondarybutton);
-            stage = 2;
+    function numberOfChildren(classname) {
+        if (classname == "secondary") {
+            return issues[id[0]].detail1.length;
+        } else if (classname == "tertiary") {
+            return issues[id[0]].detail1[id[1]].detail2.length;
+        } else if (classname == "final") {
+            return issues[id[0]].detail1[id[1]].detail2[id[2]].detail3.length;
         }
-
-        //ensures ids are correct
-        secondaryid = -1;
-        tertiaryid = -1;
-        finalid = -1;
-        showpath();
-        //display back button
-        $(".back").html("<i class='fa fa-arrow-up fa-2x'></i>")
-        $(".back").addClass("pt-page-scaleUpDown");
-        $(".back").removeClass("disabled");
-
-        //waits for secondary button click to show input
-        secondaryclick();
     }
 
-    function addTertiaryButtons(primaryid, secondaryid) {
-        for (k = 0; k < issues[primaryid].detail1[secondaryid].detail2.length; k++) {
-            var index = issues[primaryid].detail1[secondaryid].detail2[k].name;
-            var indexnospace = index.replace(/\s+/g, '');
-            var tertiarybutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 tertiary pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + k.toString() + "'><p class='text'>" + index + "</p></button>";
-            $(".buttonbox").append(tertiarybutton);
-            stage = 3;
+    function issueName(i, classname) {
+        if (classname == "secondary") {
+            id[1] = -1;
+            id[2] = -1;
+            id[3] = -1;
+            return issues[id[0]].detail1[i].name;
+        } else if (classname == "tertiary") {
+            id[2] = -1;
+            id[3] = -1;
+            return issues[id[0]].detail1[id[1]].detail2[i].name;
+        } else if (classname == "final") {
+            id[3] = -1;
+            return issues[id[0]].detail1[id[1]].detail2[id[2]].detail3[i];
         }
-
-        //ensures ids are correct
-        tertiaryid = -1;
-        finalid = -1;
-        showpath();
-
-        //waits for tertiary button click to show input
-        Tertiaryclick();
     }
 
-    function addfinalbuttons(primaryid, secondaryid, tertiaryid) {
-        for (m = 0; m < issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3.length; m++) {
-            var index = issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3[m];
-            var indexnospace = index.replace(/\s+/g, '');
-            var finalbutton = "<button type='button' class='col-md-2 col-sm-3 col-xs-5 final pt-page-scaleUpDown btn btn-default " + indexnospace + "' id='" + m.toString() + "'><p class='text'>" + index + "</p></button>";
-            $(".buttonbox").append(finalbutton);
-            stage = 4;
+    function initialize() {
+        //creates primary menu buttons
+        for (i = 0; i < issues.length; i++) {
+            var index = issues[i].name;
+            var indexnospace = index.replace(/\s+/g, ''); //removes spaces to make class
+            var primarybutton = "<button type='button' class='issue col-md-2 col-sm-3 col-xs-5 primary btn btn-default " + indexnospace + "' id='" + i.toString() + "'>" + issues[i].img + "<p class='name'>" + index + "</p></button>";
+            $(".buttonbox").append(primarybutton);
+            $(".primary").addClass("pt-page-scaleUp");
         }
-        //ensures ids are correct
-        finalid = -1;
+        stage = 1;
+
+        //displays current button click path (currently no buttons pressed)
         showpath();
-        //waits for final button click to show input
-        finalclick();
+        //waits for primary button click
+        buttonclick();
     }
+
+    function addButtons(id, classIndex) {
+        var className = classes[classIndex];
+        for (i = 0; i < numberOfChildren(className); i++) {
+            var index = issueName(i, className);
+            var button = "<button type='button' class='issue col-md-2 col-sm-3 col-xs-5 " + className + " btn btn-default' id='" + i.toString() + "'><p class='text'>" + index + "</p></button>";
+            $(".buttonbox").append(button);
+            $("." + className).addClass("pt-page-scaleUp");
+        }
+
+        stage = classIndex + 1;
+
+        if (className == "secondary") {
+            $(".back").html("<i class='fa fa-arrow-left fa-2x'></i>")
+            $(".back").addClass("pt-page-scaleUpDown");
+            $(".back").removeClass("disabled");
+        }
+
+        showpath();
+        buttonclick();
+    }
+
+
 
     $(".back").click(function () {
         if (stage == 2) {
             $(".secondary").addClass("pt-page-scaleDownUp");
+
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
@@ -224,74 +163,84 @@ $(document).ready(function () {
                 initialize();
             }, 200);
 
+            //resets title and path values to start/blank
             $(".pickissue").text("Select an issue from the list below:");
             $(".back").html("<i class='fa fa-wrench fa-2x'></i>");
             $(".back").addClass("disabled");
-
             $(".path").text("");
 
+
+            //reset hidden text form
+            $(".form").hide();
             $(".primaryinput").val("");
             $(".secondaryinput").val("");
-
-
+            $(".adddetail").val("");
+            $(".userinput").val("");
         } else if (stage == 3) {
             $(".tertiary").addClass("pt-page-scaleDownUp");
+
+
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
             setTimeout(function () {
-                addSecondaryButtons(primaryid);
+                addButtons(id, 1);
             }, 200);
 
+
+            //reset hidden text form
+            $(".form").hide();
             $(".secondaryinput").val("");
-
-
+            $(".tertiaryinput").val("");
+            $(".adddetail").val("");
+            $(".userinput").val("");
         } else
         if (stage == 4) {
             $(".final").addClass("pt-page-scaleDownUp");
+
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
             setTimeout(function () {
-                addTertiaryButtons(primaryid, secondaryid);
+                addButtons(id, 2);
             }, 200);
 
-
+            //reset hidden text form
+            $(".form").hide();
+            $(".finalinput").val("");
+            $(".tertiaryinput").val("");
+            $(".adddetail").val("");
+            $(".userinput").val("");
         }
-        $(".tertiaryinput").val("");
-        $(".finalinput").val("");
-        $(".adddetail").val("");
-        $(".userinput").val("");
-        $(".form").hide();
+
         showpath();
     });
 
     $(".submit").click(function () {
-        ///
+        alert(id[0])
+        alert(id[1])
+        alert(id[2])
+        alert(id[3])
     });
 
     function showpath() {
 
-        var one = "";
-        var two = "";
-        var three = "";
-        var four = "";
+        var selections = ["", "", "", ""];
 
-        if (primaryid != -1) {
-            one = issues[primaryid].name;
+        if (id[0] != -1)
+            selections[0] = issues[id[0]].name;
 
-        }
-        if (secondaryid != -1)
-            two = issues[primaryid].detail1[secondaryid].name;
+        if (id[1] != -1)
+            selections[1] = issues[id[0]].detail1[id[1]].name;
 
-        if (tertiaryid != -1)
-            three = " + " + issues[primaryid].detail1[secondaryid].detail2[tertiaryid].name;
+        if (id[2] != -1)
+            selections[2] = " + " + issues[id[0]].detail1[id[1]].detail2[id[2]].name;
 
-        if (finalid != -1)
-            four = " + " + issues[primaryid].detail1[secondaryid].detail2[tertiaryid].detail3[finalid];
+        if (id[3] != -1)
+            selections[3] = " + " + issues[id[0]].detail1[id[1]].detail2[id[2]].detail3[id[3]];
 
         $(".path").text("");
-        $(".path").append(two + three + four);
+        $(".path").append(selections[0] + selections[1] + selections[2] + selections[3]);
 
     }
 });
