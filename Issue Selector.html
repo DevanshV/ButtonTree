@@ -18,46 +18,35 @@
 
 </head>
 
-<body class="container">
-    <div>
-        <span class="backbutton">
-            <button type='button' class='back btn btn-default'></button>
-        </span>
+<body class="workorder container">
+
+    <!-- header bar -->
+    <div class="row">
+        <span class="col-xs-2 col-sm-1">
+    <button type='button' class='back btn btn-default'></button>
+  </span>
         <span>
-        <p class="pickissue"> Select an issue from the list below:</p>
-        </span>
-    </div>
-    <!--<p class="path"> </p>-->
-    <span class="buttonbox"></span>
-
-    <div class="form container">
-
-        <label class="detailinputtitle" for='adddetail'>Anything we missed? Let us know!</label>
-        <textarea class="form-control adddetail" id='userinput' name="issue" type='text' rows="3" placeholder='Please input additional details here'></textarea>
-
-
-    </div>
-    <div>
-        <!--        <button type='button' class='back btn btn-default back'><i class="fa fa-arrow-left fa-2x"></i></button>-->
-        <button type='button' class='submit form btn btn-default submit pull-right'>Submit</button>
+    <p class="titleSelectIssue col-xs-9 col-sm-11 m-t-10 text"> Select an issue from the list below:</p>
+  </span>
     </div>
 
-    <!--     backend form that will be used to record answers.-->
+    <!-- displays path/button selections-->
+    <div class="row">
+        <div class="col-xs-2 col-sm-1"></div>
+        <div class="paths col-xs-9 col-sm-11 m-t-10"></div>
+    </div>
 
-<!--
-<div class="backgroundinput">
-    <p> Primary selection - General area of issue</p>
-    <input type="text" class="form-control primaryinput">
-    <p> Secondary selection</p>
-    <input type="text" class="form-control secondaryinput">
-    <p> Tertiary selection</p>
-    <input type="text" class="form-control tertiaryinput">
-    <p> Final selection</p>
-    <input type="text" class="form-control finalinput">
-    <p> User input</p>
-    <input type="text" class="form-control userinput">
-</div>
--->
+    <div class="buttonbox m-t-20 m-b-20"></div>
+
+
+    <!-- additional details form -->
+    <div class="form">
+        <label class="formTitle p-t- m-b-10" for='adddetail'>Anything we missed? Let us know!</label>
+        <textarea class="form-control adddetail" id='adddetail' name="issue" type='text' rows="3" placeholder='Please input additional details here'></textarea>
+        <button type='button' class='submit btn btn-default pull-right'>Submit</button>
+    </div>
+
+    <button type='button' class='next btn btn-default pull-right'>Confirm & Submit</button>
 
 
 </body>

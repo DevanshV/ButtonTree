@@ -1,7 +1,9 @@
 $(document).ready(function () {
-    $(".form").hide();
-    $(".back").addClass("disabled");
-    $(".back").html("<i class='fa fa-wrench fa-2x'></i>")
+
+    $(".form").hide(); //displays when final option is selected
+    $(".next").hide(); //displayed in the confirmation page (stage=5)
+    $(".back").addClass("disabled"); //back button enabled on stage 2
+    $(".back").html("<i class='fa fa-wrench fa-2x'></i>");
 
     //identifies the stage, 0 for the first, 3 for the last
     var stage = 0;
@@ -10,7 +12,7 @@ $(document).ready(function () {
     var id = [-1, -1, -1, -1];
 
     //class names corresponding to button class on each stage
-    var classes = ["primary", "secondary", "tertiary", "final"];
+    var stages = ["primary", "secondary", "tertiary", "final"];
 
     //holds the class given to each button, class is name with no spaces
     var indexnospace;
@@ -18,96 +20,137 @@ $(document).ready(function () {
     //initializes  (creates the first set of buttons)
     initialize();
 
-    function checkChildExist(classname) {
-        if (classname == "primary") {
+    //any changes made to the ".adddetail" (input form) are displayed on the hidden form ".userinput"
+    $(".adddetail")
+        .keyup(function () {
+            var value = $(this).val();
+            $(".userinput").val(value);
+        }).keyup();
+
+    $(".adddetail")
+        .keyup(function () {
+            var value = $(this).val();
+            $(".confirmInput").val(value);
+        }).keyup();
+
+    $(".confirmInput")
+        .keyup(function () {
+            var value = $(this).val();
+            $(".userinput").val(value);
+        }).keyup();
+
+    $(".confirmInput")
+        .keyup(function () {
+            var value = $(this).val();
+            $(".adddetail").val(value);
+        }).keyup();
+
+
+    //checks whether child exist for button that is clicked. True if yes, false otherwise
+    function checkChildExist(stageName) {
+        if (stageName == "primary") {
             if (issues[id[0]].detail1) {
                 return true;
             }
-        } else if (classname == "secondary") {
+        } else if (stageName == "secondary") {
             if (issues[id[0]].detail1[id[1]].detail2) {
+                id[2] = -1;
+                id[3] = -1;
                 return true;
             }
-        } else if (classname == "tertiary") {
+        } else if (stageName == "tertiary") {
             if (issues[id[0]].detail1[id[1]].detail2[id[2]].detail3) {
+                id[3] = -1;
                 return true;
             }
-        } else if (classname == "final") {
+        } else if (stageName == "final") {
             return false;
         }
         return false;
     }
 
+    //waits for button click
     function buttonclick() {
         $(".issue").click(function () {
-            $(".form").hide();
-            var classIndex;
-            if ($(this).hasClass(classes[0])) {
+
+            //sets the button as selected (inverted colors)
+            $("#" + id[stage - 1].toString()).removeClass("active");
+            $("#" + this.id.toString()).addClass("active");
+
+            //stores index for stage, 0 for primary, 3 for final stage
+            var stageIndex;
+
+            //uses button classes to determine what stage the selection is at
+            if ($(this).hasClass(stages[0])) {
                 id[0] = this.id;
-                classIndex = 0;
-            } else if ($(this).hasClass(classes[1])) {
+                stageIndex = 0; //primary
+            } else if ($(this).hasClass(stages[1])) {
                 id[1] = this.id;
-                classIndex = 1;
-            } else if ($(this).hasClass(classes[2])) {
+                stageIndex = 1; //secondary
+            } else if ($(this).hasClass(stages[2])) {
                 id[2] = this.id;
-                classIndex = 2;
-            } else if ($(this).hasClass(classes[3])) {
+                stageIndex = 2; //tertiary
+            } else if ($(this).hasClass(stages[3])) {
                 id[3] = this.id;
-                classIndex = 3;
+                stageIndex = 3; //final
             }
 
-            $("." + classes[classIndex] + "input").val($(this).text().trim());
+            //fills hidden input form, for instance "."+"primary"+"input", to create appropriate class
+            $("." + stages[stageIndex] + "input").val($(this).text().trim());
 
-            if (checkChildExist(classes[classIndex]) == true) {
-                $("." + classes[classIndex]).addClass("pt-page-scaleDownCenter");
 
+            if (checkChildExist(stages[stageIndex]) == true) { //if child exists, next layer is initiated
+
+                $("." + stages[stageIndex]).addClass("pt-page-scaleDownCenter"); //create scale down animation to current buttons
+
+                $(".adddetail").val(""); //adddetail is the class for the form input, here the input is cleared
+                $(".userinput").val(""); //userinput is the hidden form, it is also cleared
+                $(".confirmInput").val("");
+
+                //delay to avoid animation interference
                 setTimeout(function () {
-                    $(".buttonbox").empty();
-                    addButtons(id, classIndex + 1);
+                    $(".buttonbox").empty(); //clears button plane
+                    addButtons(id, stageIndex + 1); // add next stage of buttons 
                 }, 500);
 
-                showpath();
-
-                if (classes[classIndex] == "primary") {
-                    $(".pickissue").empty();
-                    $(".pickissue").append("Got it, there is an issue with the " + issues[id[0]].name.italics() + " at your residence. What else can you tell us?")
+                showpath(); //updates path of button selection
+                $(".form").hide();
+                //Displays message saying "Got it .... issue is" titleSelectIssue is the class for the text that contains this
+                if (stages[stageIndex] == "primary") {
+                    $(".titleSelectIssue").empty();
+                    $(".titleSelectIssue").append("Got it, there is an issue with the " + issues[id[0]].name.italics() + " at your residence. What else can you tell us?")
                 }
+
             } else {
+
+                //if no child exist, form appears
                 $(".form").fadeIn();
-                showpath();
+                showpath(); //path is updated
             }
 
         });
     }
 
-    $(".adddetail")
-        .keyup(function () {
-            var value = $(this).val();
-            $(".userinput").val(value);
-        })
-        .keyup();
-
-    function numberOfChildren(classname) {
-        if (classname == "secondary") {
+    function numberOfChildren(stageName) {
+        if (stageName == "secondary") {
             return issues[id[0]].detail1.length;
-        } else if (classname == "tertiary") {
+        } else if (stageName == "tertiary") {
             return issues[id[0]].detail1[id[1]].detail2.length;
-        } else if (classname == "final") {
+        } else if (stageName == "final") {
             return issues[id[0]].detail1[id[1]].detail2[id[2]].detail3.length;
         }
     }
 
-    function issueName(i, classname) {
-        if (classname == "secondary") {
-            id[1] = -1;
+    //returns name of issue based on button clicks
+    function issueName(i, stageName) {
+        if (stageName == "secondary") {
             id[2] = -1;
             id[3] = -1;
             return issues[id[0]].detail1[i].name;
-        } else if (classname == "tertiary") {
-            id[2] = -1;
+        } else if (stageName == "tertiary") {
             id[3] = -1;
             return issues[id[0]].detail1[id[1]].detail2[i].name;
-        } else if (classname == "final") {
-            id[3] = -1;
+        } else if (stageName == "final") {
             return issues[id[0]].detail1[id[1]].detail2[id[2]].detail3[i];
         }
     }
@@ -117,11 +160,14 @@ $(document).ready(function () {
         for (i = 0; i < issues.length; i++) {
             var index = issues[i].name;
             var indexnospace = index.replace(/\s+/g, ''); //removes spaces to make class
-            var primarybutton = "<button type='button' class='issue col-md-2 col-sm-3 col-xs-5 primary btn btn-default " + indexnospace + "' id='" + i.toString() + "'>" + issues[i].img + "<p class='name'>" + index + "</p></button>";
+            var primarybutton = "<button type='button' class='issue col-xs-6 col-sm-3 col-md-2 primary btn btn-default " + indexnospace + "' id='" + i.toString() + "'>" + issues[i].img + "<p class=''>" + index + "</p></button>";
             $(".buttonbox").append(primarybutton);
             $(".primary").addClass("pt-page-scaleUp");
         }
         stage = 1;
+
+        id = [-1, -1, -1, -1]; //resets all button selections
+
 
         //displays current button click path (currently no buttons pressed)
         showpath();
@@ -129,18 +175,19 @@ $(document).ready(function () {
         buttonclick();
     }
 
-    function addButtons(id, classIndex) {
-        var className = classes[classIndex];
-        for (i = 0; i < numberOfChildren(className); i++) {
-            var index = issueName(i, className);
-            var button = "<button type='button' class='issue col-md-2 col-sm-3 col-xs-5 " + className + " btn btn-default' id='" + i.toString() + "'><p class='text'>" + index + "</p></button>";
+    function addButtons(id, stageIndex) {
+        var stageName = stages[stageIndex];
+        for (i = 0; i < numberOfChildren(stageName); i++) {
+            var index = issueName(i, stageName);
+            var button = "<button type='button' class='issue not-primary col-xs-5 col-sm-3 col-md-2 " + stageName + " btn btn-default' id='" + i.toString() + "'><p class='issuename'>" + index + "</p></button>";
             $(".buttonbox").append(button);
-            $("." + className).addClass("pt-page-scaleUp");
+            $("." + stageName).addClass("pt-page-scaleUpDown");
         }
+        $("#" + id[stageIndex].toString()).addClass("active");
 
-        stage = classIndex + 1;
+        stage = stageIndex + 1; // stage index goes from 0-3 and stage goes from 1-4, so 1 is added
 
-        if (className == "secondary") {
+        if (stageName == "secondary") {
             $(".back").html("<i class='fa fa-arrow-left fa-2x'></i>")
             $(".back").addClass("pt-page-scaleUpDown");
             $(".back").removeClass("disabled");
@@ -153,9 +200,11 @@ $(document).ready(function () {
 
 
     $(".back").click(function () {
-        if (stage == 2) {
-            $(".secondary").addClass("pt-page-scaleDownUp");
+        if (stage == 2) { //second stage going to primary
 
+            $(".secondary").addClass("pt-page-scaleDownUp"); //displays animation
+
+            //adds time out for removing buttons and adding stage
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
@@ -164,10 +213,10 @@ $(document).ready(function () {
             }, 200);
 
             //resets title and path values to start/blank
-            $(".pickissue").text("Select an issue from the list below:");
+            $(".titleSelectIssue").text("Select an issue from the list below:");
             $(".back").html("<i class='fa fa-wrench fa-2x'></i>");
             $(".back").addClass("disabled");
-            $(".path").text("");
+            $(".paths").text("");
 
 
             //reset hidden text form
@@ -175,11 +224,11 @@ $(document).ready(function () {
             $(".primaryinput").val("");
             $(".secondaryinput").val("");
             $(".adddetail").val("");
-            $(".userinput").val("");
-        } else if (stage == 3) {
-            $(".tertiary").addClass("pt-page-scaleDownUp");
+        } else if (stage == 3) { //tertiary stage, going to secondary
 
+            $(".tertiary").addClass("pt-page-scaleDownUp"); //displays animation
 
+            //adds time out for removing buttons and adding stage
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
@@ -193,11 +242,12 @@ $(document).ready(function () {
             $(".secondaryinput").val("");
             $(".tertiaryinput").val("");
             $(".adddetail").val("");
-            $(".userinput").val("");
         } else
-        if (stage == 4) {
-            $(".final").addClass("pt-page-scaleDownUp");
+        if (stage == 4) { //final stage going to tertiary
 
+            $(".final").addClass("pt-page-scaleDownUp"); //displays animation
+
+            //adds time out for removing buttons and adding stage
             setTimeout(function () {
                 $(".buttonbox").empty();
             }, 200);
@@ -209,38 +259,40 @@ $(document).ready(function () {
             $(".form").hide();
             $(".finalinput").val("");
             $(".tertiaryinput").val("");
-            $(".adddetail").val("");
-            $(".userinput").val("");
         }
 
-        showpath();
+        showpath(); //updates path
     });
+
 
     $(".submit").click(function () {
-        alert(id[0])
-        alert(id[1])
-        alert(id[2])
-        alert(id[3])
+        alert("Queue confirmation screen")
     });
 
+    //displays slection path 
     function showpath() {
 
         var selections = ["", "", "", ""];
+        $(".paths").html("");
 
-        if (id[0] != -1)
-            selections[0] = issues[id[0]].name;
+        if (id[0] != -1) {
+            selections[0] = issues[id[0]].name.bold();
+            $(".paths").append(selections[0]);
+        }
 
-        if (id[1] != -1)
+        if (id[1] != -1) {
             selections[1] = issues[id[0]].detail1[id[1]].name;
+            $(".paths").append(" - " + selections[1]);
+        }
 
-        if (id[2] != -1)
-            selections[2] = " + " + issues[id[0]].detail1[id[1]].detail2[id[2]].name;
+        if (id[2] != -1) {
+            selections[2] = issues[id[0]].detail1[id[1]].detail2[id[2]].name;
+            $(".paths").append(" - " + selections[2]);
+        }
 
-        if (id[3] != -1)
-            selections[3] = " + " + issues[id[0]].detail1[id[1]].detail2[id[2]].detail3[id[3]];
-
-        $(".path").text("");
-        $(".path").append(selections[0] + selections[1] + selections[2] + selections[3]);
-
+        if (id[3] != -1) {
+            selections[3] = issues[id[0]].detail1[id[1]].detail2[id[2]].detail3[id[3]];
+            $(".paths").append(" - " + selections[3]);
+        }
     }
 });
